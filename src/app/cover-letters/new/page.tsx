@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, } from 'react'
 import { usePDF } from 'react-to-pdf'
 
 export default function NewCoverLetter() {
@@ -14,7 +13,7 @@ export default function NewCoverLetter() {
   const [jobTitle, setJobTitle] = useState('')
   const [content, setContent] = useState('')
   const [showPreview, setShowPreview] = useState(false)
-  const router = useRouter()
+  // const router = useRouter()
   const { toPDF, targetRef } = usePDF({filename: 'cover-letter.pdf'});
 
   const handleSubmit = async (e: React.FormEvent) => {

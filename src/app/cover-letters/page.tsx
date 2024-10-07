@@ -9,7 +9,7 @@ export default function CoverLetters() {
           <div className="max-w-md mx-auto">
             <h1 className="text-2xl font-semibold mb-6 text-black">My Cover Letters</h1>
             <AuthStatus />
-            <p className="mb-4 text-black">You don't have any cover letters yet.</p>
+            <p className="mb-4 text-black">You don&apos;t have any cover letters yet.</p>
             <Link href="/cover-letters/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Create New Cover Letter
             </Link>
