@@ -9,16 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.5.1",
+    "@upstash/redis": "^1.38.0",
     "autoprefixer": "^10.4.20",
+    "groq-sdk": "^1.2.1",
     "next": "14.2.14",
     "next-auth": "^4.24.8",
+    "pdf-parse": "^2.4.5",
     "react": "^18",
-    "react-color": "^2.19.3",
-    "react-dom": "^18",
-    "react-to-pdf": "^1.0.1"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-      appDir: true,
-    },
-  }
-  
-  export default nextConfig;
+  transpilePackages: ['@react-pdf/renderer'],
+  experimental: {
+    serverComponentsExternalPackages: ['pdf-parse'],
+  },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false
+    return config
+  },
+}
+
+export default nextConfig

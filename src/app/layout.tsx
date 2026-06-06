@@ -1,12 +1,29 @@
+import localFont from 'next/font/local'
 import './globals.css'
-import { Inter } from 'next/font/google'
 import AuthProvider from './AuthProvider'
+import Header from '@/components/Header'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+const geistSans = localFont({
+  src: './fonts/GeistVF.woff',
+  variable: '--font-geist-sans',
+})
+
+const geistMono = localFont({
+  src: './fonts/GeistMonoVF.woff',
+  variable: '--font-geist-mono',
+})
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d){document.documentElement.classList.add('dark')}}catch(e){}})();`
 
 export const metadata = {
-  title: 'Cover Letter Generator',
-  description: 'Create customized cover letters',
+  title: 'Resumate | AI Cover Letter Generator',
+  description: 'Generate tailored, editable cover letters from your resume and job description.',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -15,10 +32,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <AuthProvider>
-        <body className={inter.className}>{children}</body>
-      </AuthProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider>
+          <AuthProvider>
+            <div className="min-h-screen bg-[var(--canvas)] text-[var(--foreground)]">
+              <Header />
+              {children}
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Resumate
 
-## Getting Started
+AI-powered cover letter generator. Upload your resume PDF and job description, get a tailored editable cover letter, and download a high-quality single-page PDF.
 
-First, run the development server:
+## Features
+
+- Resume PDF parsing and JD input via paste or PDF
+- Groq-powered cover letter generation (Llama 3.3)
+- Google sign-in with a 5 generations per day limit (no cover letters saved)
+- Editable generated content
+- Multiple PDF templates: Modern, Classic, Minimal ATS, Executive, Accent
+- Single-page layout with density controls
+- Em dash free output
+- Copy as text and download `.txt` or `.pdf`
+
+## Free hosting stack
+
+- **Vercel** (free tier) for the Next.js app
+- **Groq** (free API) for AI generation
+- **Upstash Redis** (free tier) for daily rate limiting
+- **Google OAuth** for sign-in
+
+## Environment variables
+
+Copy `.env.example` to `.env.local` and fill in the values:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Required variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `GROQ_API_KEY` from [console.groq.com](https://console.groq.com)
+- `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` from [Google Cloud Console](https://console.cloud.google.com/)
+- `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`)
+- `NEXTAUTH_URL` (`http://localhost:3000` locally)
+- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from [Upstash](https://upstash.com/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Google OAuth setup
 
-## Learn More
+1. Create an OAuth 2.0 Client ID (Web application)
+2. Add authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+3. For production, also add: `https://your-domain.vercel.app/api/auth/callback/google`
 
-To learn more about Next.js, take a look at the following resources:
+## Local development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## Deploy to Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push this repo to GitHub
+2. Import the project in Vercel
+3. Add all environment variables from `.env.example`
+4. Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Cover letters are not stored. Only a daily generation counter is kept in Redis.
+- If Upstash is not configured locally, rate limiting is skipped in development.
+- Generated content is sanitized to remove em dashes and en dashes.
