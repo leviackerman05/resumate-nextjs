@@ -2,6 +2,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import AuthProvider from './AuthProvider'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/components/ThemeProvider'
 
 const geistSans = localFont({
@@ -39,9 +40,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <AuthProvider>
-            <div className="min-h-screen bg-[var(--canvas)] text-[var(--foreground)]">
+            <div className="flex min-h-screen flex-col bg-[var(--canvas)] text-[var(--foreground)]">
               <Header />
-              {children}
+              <div className="flex-1">{children}</div>
+              <Footer />
             </div>
           </AuthProvider>
         </ThemeProvider>
