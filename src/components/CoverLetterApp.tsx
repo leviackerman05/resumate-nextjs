@@ -30,6 +30,21 @@ const PdfPreview = dynamic(() => import('./PdfPreview'), {
   ),
 })
 
+async function readJsonResponse(response: Response) {
+  const contentType = response.headers.get('content-type') ?? ''
+
+  if (!contentType.includes('application/json')) {
+    const text = await response.text()
+    throw new Error(
+      response.status >= 500
+        ? 'Server error while processing your request. Please try again in a moment.'
+        : text.slice(0, 200) || `Request failed (${response.status})`
+    )
+  }
+
+  return response.json()
+}
+
 async function parsePdf(file: File) {
   const formData = new FormData()
   formData.append('file', file)
@@ -37,7 +52,7 @@ async function parsePdf(file: File) {
     method: 'POST',
     body: formData,
   })
-  const payload = await response.json()
+  const payload = await readJsonResponse(response)
   if (!response.ok) {
     throw new Error(payload.error ?? 'Failed to parse PDF')
   }
@@ -141,7 +156,7 @@ export default function CoverLetterApp() {
         }),
       })
 
-      const payload = await response.json()
+      const payload = await readJsonResponse(response)
 
       if (!response.ok) {
         throw new Error(payload.error ?? 'Failed to generate cover letter')
